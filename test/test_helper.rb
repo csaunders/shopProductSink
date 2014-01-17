@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] = "test"
 
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 require "rails/test_help"
+require 'shopify_api'
 
 Rails.backtrace_cleaner.remove_silencers!
 
@@ -17,6 +18,10 @@ end
 class ShopProductSink::UnitTest < ActiveSupport::TestCase
   def setup
     ShopifyAPI::Base.site = "https://fakeshop.myshopify.com/admin"
+    additional_setup
+  end
+
+  def additional_setup
   end
 
   def teardown
