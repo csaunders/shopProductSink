@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140118142609) do
+ActiveRecord::Schema.define(version: 20140118171602) do
 
   create_table "shop_product_sink_integration_object_relations", force: true do |t|
     t.integer "integration_object_id"
@@ -22,6 +22,12 @@ ActiveRecord::Schema.define(version: 20140118142609) do
   create_table "shop_product_sink_integration_objects", force: true do |t|
     t.string  "title"
     t.decimal "price", precision: 10, scale: 2
+  end
+
+  create_table "shop_product_sink_options", force: true do |t|
+    t.integer "product_id"
+    t.string  "name"
+    t.integer "position"
   end
 
   create_table "shop_product_sink_product_variants", force: true do |t|
@@ -48,7 +54,6 @@ ActiveRecord::Schema.define(version: 20140118142609) do
   create_table "shop_product_sink_products", force: true do |t|
     t.text     "body_html"
     t.string   "handle"
-    t.text     "options"
     t.string   "product_type"
     t.datetime "published_at"
     t.string   "published_scope"
