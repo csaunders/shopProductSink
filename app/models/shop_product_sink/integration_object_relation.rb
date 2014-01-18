@@ -1,12 +1,12 @@
 module ShopProductSink
-  class IntegrationObject < ActiveRecord::Base
+  class IntegrationObjectRelation < ActiveRecord::Base
     class Error < StandardError; end
     include ApiCreatable
-    has_many :integration_object_relations
+    belongs_to :integration_object
 
     def save(*args)
       unless Rails.env.test?
-        raise Error, "Cannot use IntegrationObject in non-test environment"
+        raise Error, "Cannot use IntegrationObjectRelation in non-test environment"
       end
       super
     end

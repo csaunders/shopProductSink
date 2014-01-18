@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140117001859) do
+ActiveRecord::Schema.define(version: 20140118142609) do
+
+  create_table "shop_product_sink_integration_object_relations", force: true do |t|
+    t.integer "integration_object_id"
+    t.string  "sku"
+    t.string  "option1"
+  end
 
   create_table "shop_product_sink_integration_objects", force: true do |t|
     t.string  "title"
