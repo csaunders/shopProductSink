@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = ShopProductSink::VERSION
   s.authors     = ["Christopher Saunders"]
   s.email       = ["csaunders@shopify.com"]
-  s.homepage    = "TODO"
+  s.homepage    = "http://github.com/csaunders/shopProductSink"
   s.summary     = "Tool to help reduce API requests by easily providing a cache"
   s.description = "Shop Product Sink is designed to make it easier to keep a local cache of all the product information for shops using your application"
 
