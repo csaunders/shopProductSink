@@ -4,6 +4,9 @@ module ShopProductSink
   class WebhooksTest < ActiveSupport::TestCase
 
     class ControllerDouble
+      def self.skip_before_filter(*args); end
+      def self.before_filter(*args); end
+
       include ShopProductSink::Webhooks
       attr_accessor :application_secret, :request
       def initialize(application_secret)
@@ -45,7 +48,7 @@ module ShopProductSink
     end
 
     def calculate_hmac(data)
-      digest = OpenSSL::Digest::Digest.new('sha256')
+      digest = OpenSSL::Digest.new('sha256')
       hmac = OpenSSL::HMAC.digest(digest, controller.application_secret, data)
       Base64.strict_encode64(hmac)
     end
