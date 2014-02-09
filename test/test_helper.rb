@@ -5,7 +5,7 @@ require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 require "rails/test_help"
 require 'shopify_api'
 require 'pry'
-require 'pry-debugger'
+require 'pry-byebug'
 
 Rails.backtrace_cleaner.remove_silencers!
 
