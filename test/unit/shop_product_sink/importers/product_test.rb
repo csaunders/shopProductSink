@@ -24,19 +24,28 @@ module ShopProductSink
         assert importer.session, "The session should not be nil for the importer"
       end
 
-      test "that imports by default use a page size of #{Importers::Product::PAGE_SIZE}" do
+      test "that it retrieves by default use a page size of #{Importers::Product::PAGE_SIZE}" do
         ShopifyAPI::Product.expects(:find).with(:all, query: {page: 1, limit: Importers::Product::PAGE_SIZE}).returns([])
-        assert_equal [], importer.import
+        assert_equal [], importer.retrieve
       end
 
       test "can override the default page size" do
         ShopifyAPI::Product.expects(:find).with(:all, query: {page: 1, limit: 1}).returns([])
-        assert_equal [], importer.import(limit: 1)
+        assert_equal [], importer.retrieve(limit: 1)
       end
 
       test "gracefully handles if the API client returns nil" do
         ShopifyAPI::Product.expects(:find).returns(nil)
-        assert_equal [], importer.import
+        assert_equal [], importer.retrieve
+      end
+
+      test "import takes the resulting API objects and stores them in the database" do
+        results = [ShopifyJson.product('justmops_product')]
+        ShopifyAPI::Product.expects(:find).returns(results)
+
+        assert_difference "ShopProductSink::Product.count" do
+          importer.import
+        end
       end
 
     end

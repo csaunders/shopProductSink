@@ -11,6 +11,7 @@ module ShopProductSink
 
       def import(options={})
         products = retrieve(options)
+        ShopProductSink::Product.create_from_resources(products)
       end
 
       def retrieve(options={})

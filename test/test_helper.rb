@@ -32,15 +32,16 @@ class ShopProductSink::UnitTest < ActiveSupport::TestCase
 end
 
 module ShopifyJson
-  def read_json(filename, root)
+  def self.read_json(filename, root)
     contents = File.read(File.expand_path("../fixtures/shopify_json/#{filename}.json", __FILE__))
+    ActiveSupport::JSON.decode(contents)[root]
   end
 
-  def product(filename)
+  def self.product(filename)
     ShopifyAPI::Product.new(read_json(filename, "product"))
   end
 
-  def variant(filename)
+  def self.variant(filename)
     ShopifyAPI::Variant.new(read_json(filename, "variant"))
   end
 end
