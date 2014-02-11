@@ -13,9 +13,10 @@ Shopify by keeping a shops products synchronized with a local copy.
 
 # Wanted Features / Todo List
 
-1. Provide an import helper which can do all the heavy lifting of pulling in products
+1. ~~Provide an import helper which can do all the heavy lifting of pulling in products~~
 2. Provide a way to register for webhooks for product and variant update/creation/deletion
 3. Do proper shop scoping since right now there isn't any and there could possibly be some data leakage
+4. Refactor API createable integration objects such that them and their migrations aren't imported when the engine is installed
 
 # Setup
 
