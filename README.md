@@ -10,11 +10,13 @@ Shopify by keeping a shops products synchronized with a local copy.
 # Features
 
 1. Provides functionality to import products from Shopify
+2. Provides an import helper which can do all the heavy lifting of pulling in products
+3. Provides a simple way to register webhooks for product changes
+4. Provides a module that can be included to take care of all the "boring" parts of webhook verification
 
 # Wanted Features / Todo List
 
-1. ~~Provide an import helper which can do all the heavy lifting of pulling in products~~
-2. Provide a way to register for webhooks for product and variant update/creation/deletion
+1. Provide a default webhooks controller that will do basic product synchronization
 3. Do proper shop scoping since right now there isn't any and there could possibly be some data leakage
 4. Refactor API createable integration objects such that them and their migrations aren't imported when the engine is installed
 
@@ -51,17 +53,67 @@ rake db:migrate SCOPE=shop_product_sink
 
 # Usage
 
+The engine comes with two utility functions that make it easier to integrate
+product synchronization into your app.
+
+## 1. Product Importer
+
+```ruby
+# Partner App Initialization
+importer = ShopProductSink::Importers::Product.new(shop: 'yourshop.myshopify.com', token: 'abracadabra')
+importer.import
+
+# Alternative -- Private App Initialization
+importer = ShopProductSink::Importers::Product.new(site: 'https://apikey:password@yourshop.myshopify.com/admin')
+importer.import
+```
+
+## 2. Product Synchronization via Webhooks w/ShopProductSink::WebhooksController
+
+Secondly it comes with a utility to make registering webhooks easier. There are a few catches if you want to have
+it be more automated. There are routes setup for an included Webhooks Controller that you can leverage if you don't
+want to handle validating webhooks on your own.
+
+1. Setup your applications default host
+
+```ruby
+# application.rb
+Rails.application.routes.default_url_options[:host] = "your.domain.tld"
+```
+
+2. In an initializer let the `ShopProductSink::WebhooksController` know how to find
+**a single shop based on it's shopify domain**
+
+```ruby
+# config/initializers/shop_product_sink.rb
+ShopProductSink::WebhooksController.shop_retrieval_strategy = -> (shopify_domain) {
+  Shop.where(domain: shopify_domain).first
+}
+```
+
+3. Include your Application Secret in your ENV
+
+You should probably be doing this already anyway since it's good practice. The only problem
+is you are somewhat forced onto a naming convention for at least one of your API variables.
+
+The variable that needs to be set in your environment is `SHOPIFY_API_SECRET`
+
 Because the engine doesn't provide any easily pluggable functionality yet importing will
 still need to be done manually when fetching the products from the Shopify API.
 
+4. Register to receive Product change webhooks whenever it is necessary
+
 ```ruby
-# Assuming Private App
-# For other kinds of apps see -- https://github.com/Shopify/shopify_api
-ShopifyAPI::Base.site = "https://api_key:password@someshop.myshopify.com/admin"
-
-# Grab the first 250 products, if there's more you'll need to paginate
-api_products = ShopifyAPI::Product.find(:all)
-
-# Extract and save those products and variants to the Database
-db_products = ShopProductSink::Product.create_from_resources(products)
+ShopProductSink::WebhookRegistration.register(shop: 'yourshop.myshopify.com', token: 'abracadabra')
 ```
+
+## I don't want to use your WebhooksController because XYZ
+
+You don't have to!!!
+
+If you want you can create your own webhooks handler and just include the `ShopProductSink::Webhooks` module in it.
+
+You are required to do a few things if you use this:
+
+1. Set the `shop_retrieval_strategy`
+2. Implement `application_secret`
