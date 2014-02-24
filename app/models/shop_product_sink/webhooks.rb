@@ -35,9 +35,14 @@ module ShopProductSink
     end
 
     def valid_webhook?
+      return true unless provided_hmac
       request.body.rewind
       calculated_hmac = hmac(request.body.read)
-      calculated_hmac = provided_hmac
+      calculated_hmac == provided_hmac
+    end
+
+    def no_signing_details?
+      provided_hmac.nil?
     end
 
     def affected_resource
@@ -46,6 +51,23 @@ module ShopProductSink
 
     def event
       topic.last
+    end
+
+    def resource_id
+      header_name = "X-Shopify-#{affected_resource.capitalize}-Id"
+      request.headers[header_name]
+    end
+
+    def create?
+      event == 'create'
+    end
+
+    def update?
+      event == 'update'
+    end
+
+    def delete?
+      event = 'delete'
     end
 
     private
@@ -59,11 +81,11 @@ module ShopProductSink
     end
 
     def provided_hmac
-      request.headers['X-Shopify-Hmac-SHA256']
+      @provided_hmac ||= request.headers['X-Shopify-Hmac-SHA256']
     end
 
     def topic
-      request.headers['X-Shopify-Topic'].split('/')
+      @topic ||= request.headers['X-Shopify-Topic'].split('/')
     end
   end
 end

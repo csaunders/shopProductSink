@@ -1,0 +1,64 @@
+{
+  "body_html": "<p><span></span><span>My Little Ogre, My Little Ogre, Ah Aah Aah Aah</span></p>\n<p><span>My Little Ogre</span></p>\n<p><span style=\"line-height: 1.2;\">I used to wonder what friendship could be</span></p>\n<p><span>My Little Ogre</span></p>\n<p><span style=\"line-height: 1.2;\">Until you all shared its magic with me!</span></p>\n<p><span style=\"line-height: 1.2;\">Big adventure</span></p>\n<p><span style=\"line-height: 1.2;\">Tons of fun</span></p>\n<p><span style=\"line-height: 1.2;\">A beautiful heart</span></p>\n<p><span style=\"line-height: 1.2;\">Faith full and strong</span></p>\n<p><span style=\"line-height: 1.2;\">Sharing kindness</span></p>\n<p><span>It's an easy feat!</span></p>\n<p><span>And magic makes it all complete, yeah my little ogre</span></p>\n<p><span>Do You Know You're All My very Best...</span></p>\n<p><span style=\"line-height: 1.2;\">Friends!!!</span></p>",
+  "created_at": "2013-09-09T17:37:08-04:00",
+  "handle": "my-little-ogre",
+  "id": 156731111,
+  "product_type": "Animals",
+  "published_at": "2013-09-09T17:37:06-04:00",
+  "published_scope": "global",
+  "template_suffix": null,
+  "title": "My Little Ogre - Special Edition",
+  "updated_at": "2014-02-24T06:58:09-05:00",
+  "vendor": "Orcs",
+  "tags": "collectible, inanimate, office, toys",
+  "variants": [
+    {
+      "barcode": "",
+      "compare_at_price": "15.00",
+      "created_at": "2013-09-09T17:37:09-04:00",
+      "fulfillment_service": "manual",
+      "grams": 0,
+      "id": 359113151,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "option1": "Default Title",
+      "option2": null,
+      "option3": null,
+      "position": 1,
+      "price": "12.50",
+      "product_id": 156731111,
+      "requires_shipping": true,
+      "sku": "my-little-ogre",
+      "taxable": true,
+      "title": "Default Title",
+      "updated_at": "2013-09-09T17:37:09-04:00",
+      "inventory_quantity": 39
+    }
+  ],
+  "options": [
+    {
+      "id": 188170581,
+      "name": "Title",
+      "position": 1,
+      "product_id": 156731111
+    }
+  ],
+  "images": [
+    {
+      "created_at": "2013-09-09T17:37:09-04:00",
+      "id": 312902989,
+      "position": 1,
+      "product_id": 156731111,
+      "updated_at": "2013-09-09T17:37:09-04:00",
+      "src": "http://cdn.shopify.com/s/files/1/0064/2402/products/IMG_20130909_165827.jpg?v=1378762629"
+    }
+  ],
+  "image": {
+    "created_at": "2013-09-09T17:37:09-04:00",
+    "id": 312902989,
+    "position": 1,
+    "product_id": 156731111,
+    "updated_at": "2013-09-09T17:37:09-04:00",
+    "src": "http://cdn.shopify.com/s/files/1/0064/2402/products/IMG_20130909_165827.jpg?v=1378762629"
+  }
+}

@@ -28,6 +28,25 @@ module ShopProductSink
       assert_equal 'create', controller.event
     end
 
+    test "extracting the product id" do
+      controller('abracadabra')
+      controller.request = request('', nil, 'HTTP_X_SHOPIFY_PRODUCT_ID' => 12345)
+      assert_equal 12345, controller.resource_id
+    end
+
+    test "when the webhook does not contain signing details" do
+      controller('')
+      options = {
+        :method => 'POST',
+        'CONTENT_TYPE' => 'application/json',
+        :input => '',
+        'HTTP_X_SHOPIFY_TOPIC' => 'products/create'
+      }
+      controller.request = ActionDispatch::Request.new(Rack::MockRequest.env_for("", options))
+      assert controller.valid_webhook?, "Webhooks automatically pass validation if no signature is provided"
+      assert controller.no_signing_details?, "Webhooks are aware that no signing details were given in the request"
+    end
+
     def controller(secret=nil)
       if secret.nil?
         @controller
@@ -36,14 +55,14 @@ module ShopProductSink
       end
     end
 
-    def request(data, hmac=nil)
+    def request(data, hmac=nil, headers = {})
       options = {
         :method => 'POST',
         'CONTENT_TYPE' => 'application/json',
         :input => data,
         'HTTP_X_SHOPIFY_HMAC_SHA256' => hmac || calculate_hmac(data),
         'HTTP_X_SHOPIFY_TOPIC' => 'products/create'
-      }
+      }.merge(headers)
       ActionDispatch::Request.new(Rack::MockRequest.env_for("", options))
     end
 

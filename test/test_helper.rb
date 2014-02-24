@@ -32,8 +32,12 @@ class ShopProductSink::UnitTest < ActiveSupport::TestCase
 end
 
 module ShopifyJson
+  def self.read_file(filename)
+    File.read(File.expand_path("../fixtures/shopify_json/#{filename}.json", __FILE__))
+  end
+
   def self.read_json(filename, root)
-    contents = File.read(File.expand_path("../fixtures/shopify_json/#{filename}.json", __FILE__))
+    contents = read_file(filename)
     ActiveSupport::JSON.decode(contents)[root]
   end
 
