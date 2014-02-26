@@ -1,5 +1,7 @@
 # ShopProductSink
 
+[![Build Status](https://travis-ci.org/csaunders/shopProductSink.png?branch=master)](https://travis-ci.org/csaunders/shopProductSink)
+
 **Note: This project is currently under development!**
 
 Reduce those unnecessary API calls!!
