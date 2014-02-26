@@ -1,0 +1,17 @@
+sqlite: &sqlite
+  adapter: sqlite3
+  database: db/<%= Rails.env %>.sqlite3
+
+defaults: &defaults
+  pool: 5
+  timeout: 5000
+  <<: *<%= ENV['DB'] || 'sqlite3' %>
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
