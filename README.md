@@ -42,13 +42,7 @@ mount ShopProductSink::Engine, at: "product_sink"
 Install and Run the migrations:
 
 ```
-# Install just the product sink migrations
 rake shop_product_sink:install:migrations
-
-# Not care and run migrations for whatever engines you have installed
-rake railties:install:migrations
-
-# Actually run the migrations on your database
 rake db:migrate SCOPE=shop_product_sink
 ```
 
