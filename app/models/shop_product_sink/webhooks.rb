@@ -67,7 +67,7 @@ module ShopProductSink
     end
 
     def delete?
-      event = 'delete'
+      event == 'delete'
     end
 
     private
