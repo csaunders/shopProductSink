@@ -34,8 +34,11 @@ module ShopProductSink
 
     def extract_relations!(resource)
       self.class.reflect_on_all_associations.each do |association|
-        if resource.respond_to?(association.name)
-          resource_or_resources = resource.public_send(association.name)
+      	# workaround for variants association name
+      	association_name = association.name == :product_variants ? :variants : association.name
+
+        if resource.respond_to?(association_name)
+          resource_or_resources = resource.public_send(association_name)
           records = association.klass.initialize_from_resources(resource_or_resources)
           public_send("#{association.name}=", association.collection? ? records : records.first)
         end
