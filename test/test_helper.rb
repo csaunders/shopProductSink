@@ -6,6 +6,7 @@ require "rails/test_help"
 require 'shopify_api'
 require 'pry'
 require 'pry-byebug'
+require 'mocha/mini_test'
 
 Rails.backtrace_cleaner.remove_silencers!
 
