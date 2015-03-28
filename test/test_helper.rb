@@ -37,9 +37,13 @@ module ShopifyJson
     File.read(File.expand_path("../fixtures/shopify_json/#{filename}.json", __FILE__))
   end
 
-  def self.read_json(filename, root)
+  def self.read_full_json(filename)
     contents = read_file(filename)
-    ActiveSupport::JSON.decode(contents)[root]
+    ActiveSupport::JSON.decode(contents)
+  end
+
+  def self.read_json(filename, root)
+    read_full_json(filename)[root]
   end
 
   def self.product(filename)
