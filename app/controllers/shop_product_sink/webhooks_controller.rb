@@ -17,7 +17,7 @@ module ShopProductSink
 
     def handle_creation
       return unless create?
-      initialize_model.save!
+      initialize_model.save! unless resource_class.exists?(resource_id)
     end
 
     def handle_update
