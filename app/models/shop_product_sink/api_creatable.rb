@@ -19,8 +19,7 @@ module ShopProductSink
 
       def create_from_resource(resource, shop_id = nil)
         object = initialize_from_resource(resource)
-        # TODO: make this column name configurable
-        object.shop_id = shop_id if shop_id && objects.respond_to?(:shop_id)
+        object.shop_id = shop_id if shop_id && object.respond_to?(:shop_id)
         object.save
         object
       end

@@ -3,6 +3,7 @@ require_dependency "shop_product_sink/application_controller"
 module ShopProductSink
   class WebhooksController < ApplicationController
     include ShopProductSink::Webhooks
+    include ShopProductSink::Shop
 
     def create
       handle_creation
