@@ -12,7 +12,7 @@ module ShopProductSink
     end
 
     def application_secret
-      ENV['SHOPIFY_API_SECRET']
+      ENV['SHOPIFY_APP_SECRET'] || ENV['SHOPIFY_API_SECRET']
     end
 
     def handle_creation

@@ -133,7 +133,7 @@ Rails.application.routes.default_url_options[:host] = "your.domain.tld"
 You should probably be doing this already anyway since it's good practice. The only problem
 is you are somewhat forced onto a naming convention for at least one of your API variables.
 
-The variable that needs to be set in your environment is `SHOPIFY_API_SECRET`
+The variable that needs to be set in your environment is `SHOPIFY_APP_SECRET`
 
 **3. Register to receive Product change webhooks whenever it is necessary**
 
