@@ -1,21 +1,24 @@
 module ShopProductSink
   module Importers
     class Product
+      include ShopProductSink::Shop
+
       PAGE_SIZE = 250
 
       attr_accessor :session
       def initialize(options = {})
         setup_private_app(options[:site])
         setup_partner_app(options.except(:site))
+        shopify_shop_domain(options)
       end
 
       def import(options={})
         products = retrieve(options)
-        # TODO: add shop relation to products when importing
-        ShopProductSink::Product.create_from_resources(products)
+        ShopProductSink::Product.create_from_resources(products, shop_id)
       end
 
       def retrieve(options={})
+        # FIXME: pagination stops at page 1 and/or 50 products
         products = []
         limit = options[:limit] || PAGE_SIZE
         page = 1
@@ -29,6 +32,10 @@ module ShopProductSink
 
       def fetch(page, limit)
         ShopifyAPI::Product.find(:all, query: {page: page, limit: limit}) || []
+      end
+
+      def shopify_shop_domain(options = {})
+        @shopify_shop_domain ||= options[:shop]
       end
 
       private
