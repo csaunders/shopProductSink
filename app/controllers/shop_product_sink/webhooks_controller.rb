@@ -41,8 +41,8 @@ module ShopProductSink
     end
 
     def shopify_resource
-    	# set site to string or ActiveResource raises on call to .prefix on nil
-    	ShopifyAPI::Base.site = '' if ShopifyAPI::Base.site.nil?
+      # set site to string or ActiveResource raises on call to .prefix on nil
+      ShopifyAPI::Base.site = '' if ShopifyAPI::Base.site.nil?
       ShopifyAPI::Product
     end
 
@@ -51,7 +51,9 @@ module ShopProductSink
     end
 
     def initialize_model
-      resource_class.initialize_from_resource(shopify_object)
+      model = resource_class.initialize_from_resource(shopify_object)
+      model.shop_id = shop_id
+      model
     end
   end
 end

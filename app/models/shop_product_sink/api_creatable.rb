@@ -17,14 +17,16 @@ module ShopProductSink
         Array[*resources].flatten.map { |resource| initialize_from_resource(resource) }
       end
 
-      def create_from_resource(resource)
+      def create_from_resource(resource, shop_id = nil)
         object = initialize_from_resource(resource)
+        # TODO: make this column name configurable
+        object.shop_id = shop_id if shop_id && objects.respond_to?(:shop_id)
         object.save
         object
       end
 
-      def create_from_resources(resources)
-        Array[*resources].flatten.map { |resource| create_from_resource(resource) }
+      def create_from_resources(resources, shop_id = nil)
+        Array[*resources].flatten.map { |resource| create_from_resource(resource, shop_id) }
       end
 
       def usable_keys

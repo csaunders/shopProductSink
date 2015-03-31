@@ -11,6 +11,7 @@ module ShopProductSink
 
       def import(options={})
         products = retrieve(options)
+        # TODO: add shop relation to products when importing
         ShopProductSink::Product.create_from_resources(products)
       end
 

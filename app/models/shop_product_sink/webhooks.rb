@@ -8,26 +8,24 @@ module ShopProductSink
       before_filter :verify_webhook
     end
 
-    module ClassMethods
-      def self.shop_retrieval_strategy
-        @@retrieval_strategy ||= nil
-      end
-
-      def self.shop_retrieval_strategy=(lambda)
-        @@retrieval_strategy = lambda
-      end
-    end
-
     def verify_webhook
       return if valid_webhook?
       head :unauthorized
     end
 
     def shop
-      unless self.class.shop_retrieval_strategy
-        raise ConfigurationError.new("Unable to fetch shop. Mixed-in object needs to implement this method")
+      return @shop unless @shop.nil?
+
+      shop_class = ShopProductSink.shop_class.constantize
+      shop_lookup_method = ShopProductSink.shop_lookup_method || :find_by_domain
+      if shop_class && shop_class.respond_to?(shop_lookup_method)
+        # call lookup method with shopify shop domain as argument
+        @shop = shop_class.send(shop_lookup_method, shopify_shop_domain)
       end
-      @shop ||= self.class.shop_retrieval_strategy.call
+    end
+
+    def shop_id
+      shop && shop.respond_to?(:id) ? shop.id : nil
     end
 
     def application_secret
@@ -56,6 +54,10 @@ module ShopProductSink
     def resource_id
       header_name = "X-Shopify-#{affected_resource.capitalize}-Id"
       request.headers[header_name]
+    end
+
+    def shopify_shop_domain
+      request.headers["X-Shopify-Shop-Domain"]
     end
 
     def create?
