@@ -31,7 +31,7 @@ module ShopProductSink
       end
 
       def fetch(page, limit)
-        ShopifyAPI::Product.find(:all, query: {page: page, limit: limit}) || []
+        ShopifyAPI::Product.find(:all, params: {page: page, limit: limit}) || []
       end
 
       def shopify_shop_domain(options = {})
