@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150403041010) do
+ActiveRecord::Schema.define(version: 20150403113138) do
 
   create_table "shop_product_sink_images", force: :cascade do |t|
     t.integer  "position",   limit: 2
@@ -61,6 +61,9 @@ ActiveRecord::Schema.define(version: 20150403041010) do
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "weight"
+    t.string   "weight_unit"
+    t.integer  "image_id"
   end
 
   add_index "shop_product_sink_product_variants", ["product_id"], name: "index_shop_product_sink_product_variants_on_product_id"
