@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150403002810) do
+ActiveRecord::Schema.define(version: 20150403041010) do
 
   create_table "shop_product_sink_images", force: :cascade do |t|
     t.integer  "position",   limit: 2
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20150403002810) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
+
+  add_index "shop_product_sink_images", ["product_id"], name: "index_shop_product_sink_images_on_product_id"
 
   create_table "shop_product_sink_integration_object_relations", force: :cascade do |t|
     t.integer "integration_object_id"
@@ -37,6 +39,8 @@ ActiveRecord::Schema.define(version: 20150403002810) do
     t.string  "name"
     t.integer "position"
   end
+
+  add_index "shop_product_sink_options", ["product_id"], name: "index_shop_product_sink_options_on_product_id"
 
   create_table "shop_product_sink_product_variants", force: :cascade do |t|
     t.string   "barcode"
@@ -58,6 +62,8 @@ ActiveRecord::Schema.define(version: 20150403002810) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "shop_product_sink_product_variants", ["product_id"], name: "index_shop_product_sink_product_variants_on_product_id"
 
   create_table "shop_product_sink_products", force: :cascade do |t|
     t.text     "body_html"
