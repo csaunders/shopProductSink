@@ -32,6 +32,12 @@ class ShopProductSink::UnitTest < ActiveSupport::TestCase
   end
 end
 
+def product_and_relations_difference
+  ["Product", "ProductVariant", "Option"].map { |model|
+    "ShopProductSink::#{ model }.count"
+  }
+end
+
 module ShopifyJson
   def self.read_file(filename)
     File.read(File.expand_path("../fixtures/shopify_json/#{filename}.json", __FILE__))
