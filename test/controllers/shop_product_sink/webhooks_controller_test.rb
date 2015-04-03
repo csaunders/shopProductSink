@@ -19,6 +19,7 @@ module ShopProductSink
       n_relations.times do |x|
         ShopProductSink::ProductVariant.create(relation_params)
         ShopProductSink::Option.create(relation_params)
+        ShopProductSink::Image.create(relation_params)
       end
     end
 
@@ -27,7 +28,10 @@ module ShopProductSink
       @request.env['RAW_POST_DATA'] = ShopifyJson.read_file('product_create')
       @request.env['HTTP_X_SHOPIFY_TOPIC'] = 'products/create'
       @request.env['HTTP_X_SHOPIFY_PRODUCT_ID'] = 247905905
-      assert_difference product_and_relations_difference do
+
+      # Note: Product creation fixture does not include images
+      # we remove Image.count - last item in difference argument
+      assert_difference product_and_relations_difference[0,-1] do
         post :create, ShopifyJson.read_full_json('product_create')
         assert_response :ok
       end

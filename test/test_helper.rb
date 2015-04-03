@@ -33,7 +33,7 @@ class ShopProductSink::UnitTest < ActiveSupport::TestCase
 end
 
 def product_and_relations_difference
-  ["Product", "ProductVariant", "Option"].map { |model|
+  ["Product", "ProductVariant", "Option", "Image"].map { |model|
     "ShopProductSink::#{ model }.count"
   }
 end
