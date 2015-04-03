@@ -48,6 +48,51 @@ rake shop_product_sink:install:migrations
 rake db:migrate SCOPE=shop_product_sink
 ```
 
+### Shop Scoping
+
+Add shop scoping to your products in a couple of steps. You'll need a `Shop` model, which can be looked up by the shop's myshopify.com domain.
+
+**1. Add a `has_many :products` association to your shop model**
+
+```ruby
+# app/models/shop.rb
+class Shop < ActiveRecord::Base
+  has_many :products, class_name: 'ShopProductSink::Product'
+end
+```
+Note: the `class_name` must be set to the engine's Product model.
+
+**2. Set the shop class name in an initializer**
+
+```ruby
+# config/initializers/shop_product_sink.rb
+# Set the model that ShopProductSink::Product will belong to
+ShopProductSink.shop_class = 'Shop'
+```
+This will set the belongs_to relation for `ShopProductSink::Product`. Set it as a string.
+
+**3. Let the `ShopProductSink` know how to find
+a single shop based on its shopify domain**
+
+By default, `ShopProductSink` will look up the shop using your `Shop` model's `find_by_domain` method. So, if your Shop model has a `domain` attribute that corresponds to the Shop's myshopify domain (e.g., *bagelshop.myshopify.com*), then you're set. 
+
+Otherwise, you'll need to add your own method to look up a shop by its myshopify.com domain:
+
+```ruby
+# app/models/shop.rb
+def self.find_by_shop_domain(shop_domain)
+  self.where(myshopify_domain: shop_domain).first
+end
+```
+```ruby
+# config/initializers/shop_product_sink.rb
+# Set the method within shop_class above to lookup a shop by its myshopify.com domain
+ShopProductSink.shop_lookup_method = :find_by_shop_domain
+```
+
+#### Upgrading an existing install to use shop scoping
+If you're already using `ShopProductSink` in a current app, repeat the "Install and Run migrations" step above to add a `shop_id` column to the `shop_product_sink_products` table.
+
 ## Usage
 
 The engine comes with two utility functions that make it easier to integrate
@@ -83,24 +128,14 @@ want to handle validating webhooks on your own.
 Rails.application.routes.default_url_options[:host] = "your.domain.tld"
 ```
 
-**2. In an initializer let the `ShopProductSink::WebhooksController` know how to find
-a single shop based on it's shopify domain**
-
-```ruby
-# config/initializers/shop_product_sink.rb
-ShopProductSink::WebhooksController.shop_retrieval_strategy = -> (shopify_domain) {
-  Shop.where(domain: shopify_domain).first
-}
-```
-
-**3. Include your Application Secret in your ENV**
+**2. Include your Application Secret in your ENV**
 
 You should probably be doing this already anyway since it's good practice. The only problem
 is you are somewhat forced onto a naming convention for at least one of your API variables.
 
-The variable that needs to be set in your environment is `SHOPIFY_API_SECRET`
+The variable that needs to be set in your environment is `SHOPIFY_APP_SECRET`
 
-**4. Register to receive Product change webhooks whenever it is necessary**
+**3. Register to receive Product change webhooks whenever it is necessary**
 
 ```ruby
 ShopProductSink::WebhookRegistration.register(
@@ -111,11 +146,9 @@ ShopProductSink::WebhookRegistration.register(
 
 ### I don't want to use your WebhooksController because XYZ
 
-You don't have to!!!
+You don't have to!!! If you want you can create your own webhooks handler.
 
-If you want you can create your own webhooks handler and just include the `ShopProductSink::Webhooks` module in it.
+You are required to do a few things if you use your own webhooks controller/handler:
 
-You are required to do a few things if you use this:
-
-1. Set the `shop_retrieval_strategy`
+1. Include the `ShopProductSink::Webhooks` module in it.
 2. Implement `application_secret`

@@ -8,26 +8,13 @@ module ShopProductSink
       before_filter :verify_webhook
     end
 
-    module ClassMethods
-      def self.shop_retrieval_strategy
-        @@retrieval_strategy ||= nil
-      end
-
-      def self.shop_retrieval_strategy=(lambda)
-        @@retrieval_strategy = lambda
-      end
-    end
-
     def verify_webhook
       return if valid_webhook?
       head :unauthorized
     end
 
-    def shop
-      unless self.class.shop_retrieval_strategy
-        raise ConfigurationError.new("Unable to fetch shop. Mixed-in object needs to implement this method")
-      end
-      @shop ||= self.class.shop_retrieval_strategy.call
+    def shop_id
+      raise ConfigurationError.new("Unable to determine shop_id. Mixed-in object needs to implement this method")
     end
 
     def application_secret
@@ -58,6 +45,10 @@ module ShopProductSink
       request.headers[header_name]
     end
 
+    def shopify_shop_domain
+      request.headers["X-Shopify-Shop-Domain"]
+    end
+
     def create?
       event == 'create'
     end
@@ -67,7 +58,7 @@ module ShopProductSink
     end
 
     def delete?
-      event = 'delete'
+      event == 'delete'
     end
 
     private
