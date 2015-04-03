@@ -18,10 +18,10 @@ Shopify by keeping a shops products synchronized with a local copy.
 
 ## Wanted Features / Todo List
 
-1. Provide a default webhooks controller that will do basic product synchronization
-2. Do proper shop scoping since right now there isn't any and there could possibly be some data leakage
-3. Refactor API createable integration objects such that them and their migrations aren't imported when the engine is installed
-4. Remove all CSS and JavaScript since it's not actually needed for this engine to work whatsoever
+- [ ] Provide a default webhooks controller that will do basic product synchronization
+- [x] Do proper shop scoping since right now there isn't any and there could possibly be some data leakage
+- [ ] Refactor API createable integration objects such that them and their migrations aren't imported when the engine is installed
+- [ ] Remove all CSS and JavaScript since it's not actually needed for this engine to work whatsoever
 
 ## Setup
 
@@ -41,7 +41,7 @@ Mount the application in your routes file:
 mount ShopProductSink::Engine, at: "product_sink"
 ```
 
-Install and Run the migrations:
+### Install and Run the migrations:
 
 ```
 rake shop_product_sink:install:migrations
@@ -90,8 +90,16 @@ end
 ShopProductSink.shop_lookup_method = :find_by_shop_domain
 ```
 
-#### Upgrading an existing install to use shop scoping
-If you're already using `ShopProductSink` in a current app, repeat the "Install and Run migrations" step above to add a `shop_id` column to the `shop_product_sink_products` table.
+## Upgrading
+If your app is already using `ShopProductSink`, upgrading is similar to setup.
+
+1. Update the gem using bundler:
+
+`bundle update shop_product_sink`
+
+2. Go through the **Install and Run migrations** step above to update your database tables.
+
+3. Go through the steps for **Shop Scoping** above if your app will be used by multiple shops.
 
 ## Usage
 
@@ -143,6 +151,8 @@ ShopProductSink::WebhookRegistration.register(
   token: 'abracadabra'
 )
 ```
+
+That's all you need. As product webhooks come in, ShopProductSink will keep local product data in sync with Shopify's for the shop in question.
 
 ### I don't want to use your WebhooksController because XYZ
 
