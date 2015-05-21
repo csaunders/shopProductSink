@@ -42,8 +42,6 @@ module ShopProductSink
     end
 
     def shopify_resource
-      # set site to string or ActiveResource raises on call to .prefix on nil
-      ShopifyAPI::Base.site = '' if ShopifyAPI::Base.site.nil?
       ShopifyAPI::Product
     end
 
