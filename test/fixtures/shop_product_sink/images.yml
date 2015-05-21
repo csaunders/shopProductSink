@@ -1,0 +1,9 @@
+one:
+  position: 1
+  product_id: 1
+  src: MyText
+
+two:
+  position: 2
+  product_id: 1
+  src: MyText

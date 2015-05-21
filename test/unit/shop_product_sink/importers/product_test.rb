@@ -25,12 +25,12 @@ module ShopProductSink
       end
 
       test "that it retrieves by default use a page size of #{Importers::Product::PAGE_SIZE}" do
-        ShopifyAPI::Product.expects(:find).with(:all, query: {page: 1, limit: Importers::Product::PAGE_SIZE}).returns([])
+        ShopifyAPI::Product.expects(:find).with(:all, params: {page: 1, limit: Importers::Product::PAGE_SIZE}).returns([])
         assert_equal [], importer.retrieve
       end
 
       test "can override the default page size" do
-        ShopifyAPI::Product.expects(:find).with(:all, query: {page: 1, limit: 1}).returns([])
+        ShopifyAPI::Product.expects(:find).with(:all, params: {page: 1, limit: 1}).returns([])
         assert_equal [], importer.retrieve(limit: 1)
       end
 
@@ -43,7 +43,7 @@ module ShopProductSink
         results = [ShopifyJson.product('justmops_product')]
         ShopifyAPI::Product.expects(:find).returns(results)
 
-        assert_difference "ShopProductSink::Product.count" do
+        assert_difference product_and_relations_difference do
           importer.import
         end
       end
