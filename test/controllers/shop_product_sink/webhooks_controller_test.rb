@@ -6,7 +6,6 @@ module ShopProductSink
     setup do
       @routes = Engine.routes
       @request.env['CONTENT_TYPE'] = 'application/json'
-      ShopifyAPI::Base.site = "https://example.myshopify.com/admin"
       WebhooksController.any_instance.stubs(:application_secret).returns('abracadabra')
     end
 
