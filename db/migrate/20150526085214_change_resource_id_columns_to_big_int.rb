@@ -1,5 +1,8 @@
 class ChangeResourceIdColumnsToBigInt < ActiveRecord::Migration
   def change
+    # SQLite supports 1 to 8-byte integer sizes automatically - do nothing
+    return if ActiveRecord::Base.connection.instance_of? ActiveRecord::ConnectionAdapters::SQLite3Adapter
+
     reversible do |dir|
       dir.up do
         # change columns that refer to resource IDs created in Shopify to 64-bit (8-byte) integers
