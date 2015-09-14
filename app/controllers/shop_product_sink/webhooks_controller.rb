@@ -5,6 +5,8 @@ module ShopProductSink
     include ShopProductSink::Webhooks
     include ShopProductSink::Shop
 
+    before_action :shopify_resource_setup
+
     def create
       handle_creation
       handle_update
@@ -39,6 +41,10 @@ module ShopProductSink
 
     def resource_class
       ShopProductSink::Product
+    end
+
+    def shopify_resource_setup
+      ShopifyAPI::Base.site = '/' if ShopifyAPI::Base.site.nil?
     end
 
     def shopify_resource
